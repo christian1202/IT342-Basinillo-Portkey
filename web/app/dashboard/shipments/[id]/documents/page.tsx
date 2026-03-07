@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useShipments } from "@/hooks/useShipments";
 import { uploadDocument, getDocuments } from "@/services/document-service";
 import { ShipmentDocument as PortKeyDoc, DocumentType } from "@/types";
@@ -17,14 +17,15 @@ import {
 import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 
-export default function DocumentVaultPage({ params }: { params: { id: string } }) {
+export default function DocumentVaultPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const { shipments, fetchShipments } = useShipments();
   const shipment = shipments.find((s) => s.id === Number(params.id));
-  
+
   const [documents, setDocuments] = useState<PortKeyDoc[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
-  
+
   // Upload Form State
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [docType, setDocType] = useState<DocumentType>(DocumentType.BL);
@@ -88,7 +89,6 @@ export default function DocumentVaultPage({ params }: { params: { id: string } }
           </p>
         </div>
       </div>
-
       <div className="grid gap-6 md:grid-cols-3">
         {/* Upload Widget */}
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950 md:col-span-1 h-fit">

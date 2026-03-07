@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { useShipments } from "@/hooks/useShipments";
 import { getShipmentById } from "@/services/shipment-service";
@@ -11,7 +11,8 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import SkeletonLoader from "@/components/ui/SkeletonLoader";
 
-export default function EditShipmentPage({ params }: { params: { id: string } }) {
+export default function EditShipmentPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const router = useRouter();
   const { editShipment } = useShipments();
   const [isLoading, setIsLoading] = useState(false);

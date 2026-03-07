@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useShipments } from "@/hooks/useShipments";
 import { getShipmentById } from "@/services/shipment-service";
 import { Shipment, ShipmentStatus } from "@/types";
@@ -20,12 +20,13 @@ import {
 import SkeletonLoader from "@/components/ui/SkeletonLoader";
 import Button from "@/components/ui/Button";
 
-export default function ShipmentDetailPage({ params }: { params: { id: string } }) {
+export default function ShipmentDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const router = useRouter();
   const { advanceStatus, removeShipment } = useShipments();
   const [isAdvancing, setIsAdvancing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  
+
   const [shipment, setShipment] = useState<Shipment | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,7 +121,6 @@ export default function ShipmentDetailPage({ params }: { params: { id: string } 
            )}
         </div>
       </div>
-
       <div className="grid gap-6 md:grid-cols-3">
         {/* Left Column (2/3) - Main Details & Progress */}
         <div className="space-y-6 md:col-span-2">
