@@ -38,7 +38,7 @@ export default function RegisterPage() {
     try {
       setIsLoading(true);
       setError("");
-      await register({ email, password, firstname, lastname });
+      await register({ email, password, firstName: firstname, lastName: lastname });
     } catch (err: any) {
       setError(err.message || "Failed to create account.");
     } finally {

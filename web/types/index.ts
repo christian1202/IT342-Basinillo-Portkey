@@ -57,8 +57,8 @@ export interface ApiResponse<T> {
 export interface User {
   id: number;
   email: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   role: Role;
   plan: Plan;
 }
@@ -82,8 +82,8 @@ export interface LoginRequest {
 export interface RegisterRequest {
   email: string;
   password: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
 }
 
 /* ------------------------------ Shipment ------------------------------ */

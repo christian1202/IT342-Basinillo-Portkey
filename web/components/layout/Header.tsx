@@ -30,7 +30,7 @@ export default function Header() {
         <div className="flex items-center gap-4 border-l border-slate-200 pl-6 dark:border-slate-800">
           <div className="flex flex-col items-end">
             <span className="text-sm font-semibold text-slate-900 dark:text-white">
-              {user ? `${user.firstname} ${user.lastname}` : "Loading..."}
+              {user ? `${user.firstName} ${user.lastName}` : "Loading..."}
             </span>
             <div className="flex items-center gap-2">
               <span className={`text-xs font-medium ${
@@ -44,7 +44,7 @@ export default function Header() {
           </div>
           
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">
-            {user ? user.firstname.charAt(0) : "?"}
+            {user ? user.firstName.charAt(0) : "?"}
           </div>
 
           <button

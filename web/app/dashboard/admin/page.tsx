@@ -109,7 +109,7 @@ export default function AdminDashboardPage() {
               {users.map((u) => (
                 <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/50">
                   <td className="px-6 py-4">
-                    <div className="font-medium text-slate-900 dark:text-white">{u.firstname} {u.lastname}</div>
+                    <div className="font-medium text-slate-900 dark:text-white">{u.firstName} {u.lastName}</div>
                     <div className="text-xs text-slate-500">{u.email}</div>
                   </td>
                   <td className="px-6 py-4">
