@@ -1,0 +1,829 @@
+﻿A black background with red text
+
+AI-generated content may be incorrect. 
+
+
+
+IT342-G3
+System Integration and Architecture
+________________
+
+
+System Design Document (SDD)
+________________
+
+
+Project Title: Portkey
+Prepared By: Basinillo, Christian Jay Benecito
+
+
+Version: 0.1
+Date: 3/06/2026
+Status: Final
+
+
+
+
+
+
+REVISION HISTORY TABLE
+Version
+	Date
+	Author
+	Changes Made
+	Status
+	0.1
+	2/21/26
+	Christian Jay Basinillo
+	Initial draft
+	Draft
+	0.2
+	3/06/26
+	Christian Jay Basinillo
+	Final
+	Final
+	0.3
+	[Date]
+	[Your Name]
+	Updated database design
+	Review
+	0.4
+	[Date]
+	[Your Name]
+	Added UI/UX designs
+	Review
+	0.5
+	[Date]
+	[Your Name]
+	Incorporated feedback
+	Revised
+	0.6
+	[Date]
+	[Your Name]
+	Final review and corrections
+	Final
+	1
+	[Date]
+	[Your Name]
+	Baseline version for development
+	Approved
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TABLE OF CONTENTS
+Contents
+EXECUTIVE SUMMARY        4
+1.0 INTRODUCTION        5
+2.0 FUNCTIONAL REQUIREMENTS SPECIFICATION        5
+3.0 NON-FUNCTIONAL REQUIREMENTS        8
+4.0 SYSTEM ARCHITECTURE        9
+5.0 API CONTRACT & COMMUNICATION        10
+Authentication Endpoints        11
+User Registration        11
+User Login        11
+6.0 DATABASE DESIGN        13
+7.0 UI/UX DESIGN        14
+8.0 PLAN        17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EXECUTIVE SUMMARY
+1.1 Project Overview
+PortKey is an Intelligent Customs Clearance Platform designed primarily for Brokers. It serves as a focused tool to manage shipments, track cargo lifecycles, and monitor a real-time demurrage countdown to prevent costly port penalties. The system utilizes a custom-built Spring Boot backend, a Next.js web frontend, and a native Kotlin Android application.
+1.2 Objectives
+1. Develop a fully functional shipment tracking and demurrage management system for brokers.
+2. Implement a secure, custom JWT authentication system with Google OAuth2 integration, bypassing third-party Backend-as-a-Service providers.
+3. Ensure real-time urgency updates via WebSockets and automated alerts via email and Android push notifications.
+4. Deploy a cohesive three-tier architecture with a Next.js web client and an XML-based Kotlin mobile application.
+1.3 Scope
+Included Features:
+* Custom user registration and authentication (BCrypt, custom JWT).
+* Shipment creation and lifecycle tracking (Arrived to Released).
+* Real-time Demurrage Doomsday Clock with visual urgency indicators.
+* Document Vault via Cloudflare R2 for secure file uploads.
+* ExchangeRate-API integration for automated PHP duty conversions.
+* Responsive, modern Next.js web interface.
+Excluded Features:
+* Clerk or any Backend-as-a-Service auth.
+* AI features including Smart-Scan OCR and Compliance Copilot (reserved for future phases).
+* Freight booking and post-release warehouse management.
+
+
+* Automated SMS or push notifications.
+* Third-party accounting software integrations (e.g., QuickBooks, Xero).
+
+
+1.0 INTRODUCTION
+1.1 Purpose
+This document serves as the comprehensive architectural and design specification for the PortKey platform. It outlines the core requirements, technical stack decisions, API contracts, security protocols, and database schema necessary to guide development. This specification ensures that all system components from the Next.js UI down to the Spring Boot data layer, enterprise-grade customs brokerage solution.
+
+
+2.0 FUNCTIONAL REQUIREMENTS SPECIFICATION
+2.1 Project Overview
+Project Name: PortKey
+Domain: Logistics / Customs Brokerage
+Primary Users: Customs Broker / Logistics Specialist
+Problem Statement: Brokers need a centralized, real-time tool to track incoming container shipments and avoid devastating demurrage charges due to missed deadlines.
+Solution: A centralized digital ledger for customs brokers. It provides a structured way to encode shipment details, and track the clearance lifecycle from a single dashboard.
+
+
+2.2 Core User Journeys
+Journey 1: New Broker Onboarding & First Shipment Entry
+1. Broker visits the PortKey web application and lands on the secure login portal.
+2. Click "Sign Up" to create a professional broker account.
+3. Navigates to "Create New Shipment" from the sidebar.
+4. Encodes Shipment Details: Manually enters the Bill of Lading (BL) number, Consignee name, Port of Origin, and Container details.
+5. Saves Record: The shipment is assigned a "Pending" status and appears in the active tracking list.
+Journey 2: Shipment Lifecycle & Status Tracking
+1. Broker logs in and is greeted by the Shipment Analysis Dashboard.
+2. Filters Shipments: Uses the search bar to find a specific BL number or filters by "Pending Customs" to see what needs attention.
+3. Updates Status: As the shipment arrives at the port, the broker clicks the record and updates the status from "In Transit" to "Arrived at Port."
+4. Logs Milestones: The broker enters the "Date of Release" once customs clearance is granted.
+5. Historical Archive: Marks the shipment as "Completed" once delivered, which moves it from the active list to the searchable archives.
+Journey 3: Administrator Product Management
+1. Admin logs in with specialized administrative credentials.
+2. Global Overview: Accesses a master view of all shipments encoded by all clerks/brokers in the system.
+3. Performance Analysis: Views the "Shipment Analysis" module to track KPIs, such as the total volume of shipments cleared per month or average clearance lead times.
+4. Record Auditing: Reviews historical shipment data and attached documents for compliance checks.
+5. User Management: Manages broker accounts, ensuring only authorized personnel can access the sensitive logistical data.
+2.3 Feature List (MoSCoW)
+MUST HAVE
+1. User Authentication: Secure register, login, and logout for Brokers.
+2. Shipment Management (CRUD): Ability to create, view, update, and delete shipment records manually.
+3. Role-Based Access Control (RBAC): Row-level security so Brokers see their specific shipments, while Admins see everything.
+4. Shipment Lifecycle Status: A field to update statuses (e.g., In Transit, Arrived at Port, Customs Processing, Released).
+5. Basic Shipment Search: Ability to find a record by Bill of Lading (BL) number or Consignee.
+6. Admin Dashboard: Oversight of all user accounts and global shipment volume.
+SHOULD HAVE
+1. Shipment Analysis Module: A simple UI dashboard showing count of active vs. completed shipments.
+2. Input Validation: Form validation to ensure BL numbers and dates are entered correctly to prevent data errors
+3. Timestamp Logging: Automatically tracking when a shipment status was last changed.
+COULD HAVE
+1. Document Upload: Ability to attach a PDF or Image (Invoice/Packing List) to a specific shipment record.
+2. Shipment "Flagging": Ability to mark a shipment as "Urgent" or "Delayed" with a red visual indicator.
+3. Export to CSV/Excel: One-click download of the shipment list for monthly reporting.
+4. Client Management: A separate table to store frequent Consignee/Client details to avoid re-typing them.
+WON'T HAVE
+1. AI Data Extraction: Automated parsing of documents (we are keeping it manual for the MVP).
+2. Real-time GPS Tracking: Integration with physical truck or vessel tracking hardware.
+3. Payment Gateway: Processing of customs duties or brokerage fees directly in-app.
+4. Email/SMS Notifications: Automated alerts sent to clients upon clearance.
+5. Multi-language Support: The system will be English-only for the initial release.
+2.4 Detailed Feature Specifications
+Feature: User Authentication
+* Screens: Registration, Login, Forgot Password
+* Fields: Email, Password, Confirm Password
+* Validation: Professional email format, password strength (min 8 chars), uniqueness check.
+* API Endpoints: POST /auth/register, POST /auth/login, POST /auth/logout
+* Security:  JWT tokens for stateless sessions, password hashing with BCrypt.
+Feature: Shipment Repository (The "List")
+* Screens: Shipment Dashboard, Shipment Details
+* Display: Table layout showing Bill of Lading (BL) #, Consignee, ETA, and Status Badge.
+* Search: Search by BL number, filter by status (e.g., In Transit, Released).
+* API Endpoints: GET /api/shipments (Returns user-specific shipments)
+GET /api/shipments/{id} (Detailed view of a single container/shipment)
+Feature: Shipment Entry & Management (Manual Encoding)
+* Screens: Create Shipment Form, Edit Shipment View
+* Fields: Bill of Lading #, Consignee, Port of Origin, Port of Destination, Vessel Name, ETA, Description of Goods.
+* Functions: Save draft, update logistical status, delete record.
+* API Endpoints: POST /api/shipments (Create new)
+PUT /api/shipments/{id} (Update status/info)
+DELETE /api/shipments/{id} (Remove record)
+
+
+Feature: Shipment Analysis Module
+* Screens: Analysis Overview
+* Data Display: Total Volume (count), Active Shipments vs. Completed Shipments, Clearance Lead Time (average days).
+* Visualization: Simple cards with counts and a status distribution chart.
+* API Endpoints: GET /api/shipments/analysis (Aggregated stats for the dashboard).
+Feature: Admin Control Center
+Screens: Global Shipment List, User Management
+Functions: Audit any shipment in the system, activate/deactivate broker accounts, view global logistics performance.
+Access Control: ROLE_ADMIN required; standard users are blocked from these routes.
+API Endpoints: * GET /api/admin/shipments (All data access)
+* GET /api/admin/users (Account management)
+
+
+
+
+2.5 Acceptance Criteria
+AC-1: Successful Broker Registration & Onboarding
+* Given I am a new customs broker.
+* When I enter a valid email, name, and strong password.
+* And I click "Create Account".
+* Then my account should be created in the database with ROLE_USER.
+* And I should be redirected to the Shipment Dashboard (empty state).
+AC-2: Manual Shipment Lifecycle (The "Core Loop")
+* Given I am logged in as a Broker.
+* When I fill out the "New Shipment" form with a Bill of Lading (BL), Consignee, and ETA.
+* And I click "Save Shipment".
+* Then the record should appear in my Active Shipments table.
+* And I should be able to update the status to "Arrived at Port".
+* And the Shipment Analysis card should increment the "Active" count by 1.
+AC-3: Data Isolation (Privacy Check)
+* Given I am logged in as Broker A.
+* When I attempt to access a shipment ID belonging to Broker B via direct URL.
+* Then the system should return a 403 Forbidden or 404 Not Found.
+* And Broker B’s shipments should never appear in Broker A’s search results or Analysis dashboard.
+3.0 NON-FUNCTIONAL REQUIREMENTS
+3.1 Performance Requirements
+* API Response Time: =< 1.5 seconds for shipment queries (important for brokers managing hundreds of records).
+* Web Load Time: =< 2.5 seconds for the Dashboard on a 4G/LTE connection (brokers often work in ports with varying signal).
+* Data Integrity: 0% data loss during shipment status updates.
+* Database Queries: Complex filters on the Shipment table must complete within $300ms
+3.2 Security Requirements
+* Transport Security: Mandatory HTTPS (TLS 1.2+) for all traffic (No HTTP -> HTTPS redirects causing 405s!).
+* Authentication: Stateless JWT tokens stored in HttpOnly cookies.
+* Password Policy: BCrypt hashing with a cost factor of 12.
+* CORS Policy: Strict origin matching (Only allow portkey.vercel.app and localhost:3000).
+* Environment Variables: No hardcoded URLs or secrets in the codebase.
+3.3 Compatibility Requirements
+* Browsers: Chrome, Safari, and Firefox (95% of broker workstations).
+* Mobile Web: Must be fully functional on mobile browsers (Safari for iOS, Chrome for Android) for "on-the-dock" updates.
+* Screen Sizes: Optimised for 13" Laptops (Standard broker hardware) and Mobile (375px+).
+3.4 Usability Requirements
+* Efficiency: A broker should be able to manually encode a 10-field shipment in under 60 seconds.
+* Feedback: Success/Error "Toasts" must appear for every database action (Save/Update/Delete).
+* Scannability: Status badges must be color-coded (e.g., Green for "Cleared", Amber for "Pending", Red for "Delayed").
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.0 SYSTEM ARCHITECTURE
+4.1 Component Diagram
+  
+
+
+
+Technology Stack:
+* Backend: Spring Boot 3.x (Java 17), Spring Security, jjwt, Spring Data JPA, JavaMailSender
+* Database: NeonDB (PostgreSQL)
+* Web Frontend: Next.js 16 or the latest version, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Axios
+* Mobile: Kotlin, XML Layouts, Retrofit2, OkHttp3, Firebase Cloud Messaging (FCM)
+* Deployment: Railway/Heroku (Backend), Vercel/Netlify (Web), APK (Mobile)
+
+
+5.0 API CONTRACT & COMMUNICATION
+5.1 API Standards
+Base URL
+	https://[server_hostname]:[port]/api/v1
+	Format
+	JSON for all requests/responses
+	Authentication
+	Bearer token (JWT) in Authorization header
+	Response Structure
+	{
+  "success": boolean,
+  "data": object|null,
+  "error": {
+    "code": string,
+    "message": string,
+    "details": object|null
+  },
+  "timestamp": string
+}
+	
+
+5.2 Endpoint Specifications
+Authentication Endpoints
+User Registration
+Description
+	User Registration
+	API URL
+	/auth/register
+	HTTP Request Method
+	POST
+	Format
+	JSON for all requests/responses
+	Authentication
+	None
+	Request Payload
+	{
+   “email”: <email>,
+   “password”: <password>,
+   “firstname”: <firstname>,
+   “lastname”: <lastname>,
+}
+	Response Structure
+	{
+  "success": boolean,
+  "data":  {
+        user {
+            “email”: <email>,
+            “firstname”: <firstname>,
+            “lastname”: <lastname>,
+        },
+        “accessToken”: <token>,
+        “refreshToken”: <token>,
+  },
+  "error": {
+    "code": string,
+    "message": string,
+    "details": object|null
+  },
+  "timestamp": string
+}
+	User Login
+Description
+	User Login
+	API URL
+	/auth/login
+	HTTP Method
+	POST
+	Format
+	JSON for all requests/responses
+	Authentication
+	None
+	Request Payload
+	{
+   “email”: <email>,
+   “password”: <password>,
+}
+	Response Structure
+	{
+  "success": boolean,
+  "data":  {
+        “user”:  {
+            “email”: <email>,
+            “firstname”: <firstname>,
+            “lastname”: <lastname>,
+            “role”: <role>,
+        },
+        “accessToken”: <token>,
+        “refreshToken”: <token>,
+  },
+  "error": {
+    "code": string,
+    "message": string,
+    "details": object|null
+  },
+  "timestamp": string
+}
+	
+
+5.3 Error Handling
+HTTP Status Codes
+* 200 OK - Successful request
+* 201 Created - Resource created
+* 400 Bad Request - Invalid input
+* 401 Unauthorized - Authentication required/failed
+* 403 Forbidden - Insufficient permissions
+* 404 Not Found - Resource doesn't exist
+* 409 Conflict - Duplicate resource
+* 500 Internal Server Error - Server error
+Error Code Examples
+
+
+Example 1
+	json
+{
+  "success": false,
+  "data": null,
+  "error": {
+    "code": "AUTH-001",
+    "message": "Invalid credentials",
+    "details": "Email or password is incorrect"
+  },
+  "timestamp": "2024-01-28T10:30:00Z"
+}
+
+
+	Example 2
+	{
+  "success": false,
+  "data": null,
+  "error": {
+    "code": "VALID-001",
+    "message": "Validation failed",
+    "details": {
+      "email": "Email is required",
+      "password": "Must be at least 8 characters"
+    }
+  },
+  "timestamp": "2024-01-28T10:30:00Z"
+}
+
+
+	
+
+Common Error Codes
+* AUTH-001: Invalid credentials
+* AUTH-002: Token expired
+* AUTH-003: Insufficient permissions
+* VALID-001: Validation failed
+* DB-001: Resource not found
+* DB-002: Duplicate entry
+* BUSINESS-001: Insufficient stock
+* SYSTEM-001: Internal server error
+
+
+3. Get Current User (Session Validation)
+Description
+	Retrieves the authenticated user's profile and role (Broker/Admin). Required for UI conditional rendering on Next.js and Kotlin.
+	API URL
+	/auth/me
+	HTTP Method
+	GET
+	Authentication
+	Bearer token
+	Request Payload
+	(None)
+	Response Structure
+	(To be defined in detail)
+	Shipment & Demurrage Endpoints
+
+
+1. Create Shipment
+Description
+	Creates a new shipment, calculates the demurrage doomsday date, and triggers the ExchangeRate-API for currency conversion.
+	API URL
+	/shipments
+	HTTP Method
+	POST
+	Authentication
+	Bearer token
+	Request Payload
+	(To be defined in detail)
+	Response Structure
+	(To be defined in detail)
+	2. Get All Shipments (Dashboard)
+Description
+	Retrieves active shipments for the dashboard, sorted by demurrage urgency. Broker role sees their own; Admin role sees all.
+	API URL
+	/shipments
+	HTTP Method
+	GET
+	Authentication
+	Bearer token
+	Request Payload
+	(Query Parameters: ?status=ACTIVE&lane=GREEN&search=keyword)
+	Response Structure
+	(To be defined in detail)
+	3. Get Shipment Detail
+Description
+	Retrieves the full details of a specific shipment, including the lifecycle stage, calculated PHP duty, and document list.
+	API URL
+	/shipments/{id}
+	HTTP Method
+	GET
+	Authentication
+	Bearer token
+	Request Payload
+	(None)
+	Response Structure
+	(To be defined in detail)
+	4. Update Shipment Status (Stage Advance)
+Description
+	Advances the shipment through its lifecycle (ARRIVED -> LODGED -> ASSESSED -> PAID -> RELEASED).
+	API URL
+	/shipments/{id}/status
+	HTTP Method
+	PATCH
+	Authentication
+	Bearer token
+	Request Payload
+	(To be defined in detail)
+	Response Structure
+	(To be defined in detail)
+	5. Delete Shipment
+Description
+	Performs a soft delete on a shipment (sets deletedAt timestamp).
+	API URL
+	/shipments/{id}
+	HTTP Method
+	DELETE
+	Authentication
+	Bearer token
+	Request Payload
+	(None)
+	Response Structure
+	(To be defined in detail)
+	Document Vault Endpoints
+
+
+1. Upload Document
+Description
+	Accepts a multipart file upload (PDF/PNG/JPG), pushes it to Cloudflare R2, and saves the metadata to the database.
+	API URL
+	/shipments/{id}/documents
+	HTTP Method
+	POST
+	Format
+	multipart/form-data
+	Authentication
+	Bearer token
+	| Request Payload (Form Data) | file: (Binary File Data)
+
+
+ documentType: "BL" | "CI" | "PL" | "PERMIT" | "OTHER" |
+| Response Structure | (To be defined in detail) |
+
+
+2. List Documents & Download URLs
+Description
+	Returns a list of documents attached to a shipment, including 1-hour expiry presigned URLs for downloading from R2.
+	API URL
+	/shipments/{id}/documents
+	HTTP Method
+	GET
+	Authentication
+	Bearer token
+	Request Payload
+	(None)
+	Response Structure
+	(To be defined in detail)
+	External Integration & Mobile Endpoints
+
+
+1. Create PayMongo Payment Link
+Description
+	Generates a PayMongo sandbox payment link to upgrade a user to the Pro plan.
+	API URL
+	/payments/create-link
+	HTTP Method
+	POST
+	Authentication
+	Bearer token
+	Request Payload
+	(None)
+	Response Structure
+	(To be defined in detail)
+	2. PayMongo Webhook Callback
+Description
+	Endpoint that PayMongo calls when a payment succeeds or fails. Updates the user's plan to PRO upon success.
+	API URL
+	/payments/webhook
+	HTTP Method
+	POST
+	Authentication
+	None (Uses PayMongo webhook signature validation)
+	Request Payload
+	(Standard PayMongo Event Object)
+	Response Structure
+	(To be defined in detail)
+	3. Register Mobile Device (Push Notifications)
+Description
+	Saves the Android device's Firebase Cloud Messaging (FCM) token so the backend can send Demurrage Critical push alerts.
+	API URL
+	/devices
+	HTTP Method
+	POST
+	Authentication
+	Bearer token
+	Request Payload
+	(To be defined in detail)
+	Response Structure
+	(To be defined in detail)
+	
+
+
+
+6.0 DATABASE DESIGN
+6.1 Entity Relationship Diagram
+  
+
+Detailed Relationships:
+* One-to-Many: User → Shipments (A broker can create and manage multiple active shipments).
+* One-to-Many: User → Payments (A user can have multiple payment records for Pro plan upgrades).
+* One-to-Many: User → Devices (A user can log in on multiple Android devices, each with an FCM token).
+* One-to-Many: Shipment → ShipmentItems (A single container shipment can contain multiple cargo items).
+* One-to-Many: Shipment → Documents (A shipment can have multiple attached files like BL, CI, PL).
+* Many-to-One: Shipments → User (Shipments are tied to the specific broker who created them).
+Key Tables:
+* users: Core user accounts, roles (BROKER/ADMIN), subscription plan, and authentication data.
+* shipments: The central operational entity tracking vessel details, container info, doomsday dates, and clearance status.
+* shipment_items: Individual cargo lines within a shipment, including declared values and calculated PHP duties.
+* documents: Metadata and Cloudflare R2 file URLs for uploaded customs documents.
+* payments: Audit log of PayMongo transactions for account upgrades.
+* devices: Storage for Android FCM push notification tokens.
+* notifications: (Optional/Audit) Log of automated demurrage warning and critical emails sent by the cron job.
+Table Structure Summary:
+* users: id, email, password_hash, full_name, role (BROKER/ADMIN), plan (FREE/PRO), google_id, created_at
+* shipments: id, user_id, vessel_name, voyage_number, arrival_date, port_of_discharge, client_name, container_numbers, free_days, doomsday_date, status (ARRIVED/LODGED/ASSESSED/PAID/RELEASED), lane (GREEN/YELLOW/RED), entry_number, or_number, deleted_at, created_at
+* shipment_items: id, shipment_id, description, hs_code, quantity, declared_value, currency, php_converted_value, exchange_rate, created_at
+* documents: id, shipment_id, file_name, file_url, type (BL/CI/PL/PERMIT/OTHER), size_bytes, uploaded_at
+* payments: id, user_id, amount, status, reference_number, created_at
+* devices: id, user_id, fcm_token, device_model, registered_at
+
+
+
+
+7.0 UI/UX DESIGN
+7.1 Web Application Wireframes
+  
+
+  
+
+
+
+Login & Registration Page
+* Header: PortKey Logo.
+* Forms: Email, Password, and Full Name fields.
+* OAuth: A prominent "Continue with Google" button.
+Broker Dashboard (Main View)
+* Header: Logo, User Profile Avatar, Role Indicator (Broker/Admin), "Logout" button, and an "Upgrade to Pro" PayMongo prompt if the free limit is reached.
+* Controls: Search bar (by Vessel or Container), Multi-select Stage filter (Arrived, Lodged, Assessed, Paid), and Lane filter (Green, Yellow, Red).
+* Content Area: Active shipments sorted automatically by demurrage urgency.
+* Shipment Card: Displays Vessel Name, Client Name, Container Number, and a current Stage badge.
+* Demurrage Indicator: A live countdown badge on each card utilizing specific colors: Safe (Green), Warning (Orange, pulsing), and Critical (Red, flashing).
+Shipment Detail Page
+* Header: Back button, Vessel Name, Voyage No., and Entry Number.
+* Progress UI: A horizontal step indicator for lifecycle stages (ARRIVED → LODGED → ASSESSED → PAID → RELEASED) alongside stage advance buttons.
+* Demurrage Widget: A large clock widget showing days remaining, utilizing the urgency color system.
+* Cargo Table: Lists cargo items showing Description, HS Code, Quantity, Declared Value in foreign currency, and the calculated PHP Equivalent based on ExchangeRate-API data.
+* Document Vault: A drag-and-drop upload zone for PDFs/images via React Dropzone. Below it, a list of uploaded documents (BL, CI, PL) featuring file size, upload date, and a download link.
+Create Shipment Form (Wizard)
+* Vessel Info Section: Inputs for Vessel Name, Voyage Number, Arrival Date, Port of Discharge, Client Name, and Container Details.
+* Cargo Section: Inputs for cargo items including a dropdown currency selector (USD, EUR, CNY, etc.) that triggers the automatic PHP conversion.
+Admin Dashboard (Role-Restricted)
+* Visibility: Unlocks visibility of all shipments across all brokers in the system.
+* Management: Provides global edit and delete buttons for any shipment.
+
+
+
+
+7.2 Mobile Application Wireframes
+  
+
+  
+
+Login Screen
+* Header: PortKey Logo and "Intelligent Customs Clearance".
+* Input Fields: EditText components for Email and Password.
+* Action: MaterialButton for "Login".
+* Feedback: Snackbar component for displaying authentication errors.
+Shipment List Screen (Broker Dashboard)
+* Layout Structure: RecyclerView wrapped in a SwipeRefreshLayout for pull-to-refresh functionality.
+* List Item (Custom XML Layout):
+   * Vessel Name and Client Name.
+   * Container Number.
+   * Demurrage Urgency Badge: Background color set programmatically based on data (Safe = Green, Warning = Orange, Critical = Red).
+* Data Sorting: List is dynamically sorted with "CRITICAL" urgency shipments appearing at the top.
+Shipment Detail Screen
+* Layout Structure: NestedScrollView to handle dense data.
+* Header: Back navigation arrow, Vessel Name, and Voyage No.
+* Lifecycle UI: A horizontal step indicator (Custom XML view) mapping the stage (Arrived → Lodged → Assessed).
+* Demurrage Widget: Large countdown text showing days remaining.
+* Document Vault: A nested RecyclerView listing uploaded files (BL, CI, PL).
+* Actions: Download icons next to documents that trigger native Android Intents to view the file.
+* Role-Aware UI: Admin users see "Delete" buttons on all shipments; Broker users only see them on their own.
+Mobile-Specific Features & UX
+* Target OS: Android 14 (API Level 34).
+* Background Alerts: Firebase Cloud Messaging (FCM) integration for push notifications when a container hits the "Warning" or "Critical" zone.
+* Security: JWTs are never stored in plain text; they utilize Android's EncryptedSharedPreferences.
+Design System
+* Framework: Android Material Design Components via XML.
+* Urgency Colors (State Lists): Success/Safe (Green, >3 days), Warning (Orange, 2-3 days), Critical/Overdue (Red, 0-1 days).
+* Typography: Android System Default (Roboto), readable sizing.
+* Spacing: Standard 8dp Material grid system.
+
+
+8.0 PLAN
+8.1 Project Timeline
+Phase 1: Backend Development (Month 1 | Weeks 1-4) Goal: All APIs working, Custom Auth complete, JWT flowing, third-party APIs connected.
+* Week 1: Foundation & Custom Auth
+   * Day 1-2: Project setup (Spring Boot 3.x, Java 17, Maven). Connect NeonDB via JPA/Hibernate.
+   * Day 3-4: Create all database entities (User, Shipment, ShipmentItem, Document, Payment, Notification) and Flyway migrations.
+   * Day 5: Custom Auth: POST /api/auth/register (BCrypt hashing, send welcome email via Gmail SMTP).
+* Week 2: OAuth & Roles
+   * Day 1-2: Custom Auth: POST /api/auth/login and GET /api/auth/me. Spring Security config.
+   * Day 3-4: Google OAuth2 integration: Extract user, generate custom internal JWT on callback.
+   * Day 5: Role-Based Access Control (BROKER vs ADMIN). Secure endpoints via @PreAuthorize.
+* Week 3: Core Business Logic
+   * Day 1-3: Shipment CRUD (POST, GET, PATCH, DELETE). Compute doomsdayDate.
+   * Day 4-5: ExchangeRate-API integration via RestTemplate for currency conversion (with caching).
+* Week 4: Advanced Features & Integrations
+   * Day 1-2: Demurrage cron job (Spring Scheduler at 8 AM PHT). Send warning/critical emails.
+   * Day 3: WebSocket (STOMP) configuration for real-time dashboard broadcasts.
+   * Day 4: Document upload endpoint to Cloudflare R2 via AWS SDK.
+   * Day 5: PayMongo sandbox integration (/create-link and webhook).
+Phase 2: Web Application (Month 2 | Weeks 5-8) Goal: Next.js app working end-to-end with real Spring Boot data.
+* Week 5: Frontend Foundation & Auth
+   * Day 1-2: Next.js setup, Tailwind, shadcn/ui, Axios interceptor for JWT.
+   * Day 3-5: Login, Register, and Google OAuth flow. Protected route middleware.
+* Week 6: Broker Dashboard
+   * Day 1-2: Fetch and render shipment cards with demurrage countdown badges.
+   * Day 3-4: Implement WebSocket connection via SockJS + STOMP.js for live UI updates.
+   * Day 5: Build 4-step Create Shipment wizard with Zod validation.
+* Week 7: Details & Document Vault
+   * Day 1-2: Shipment detail page (progress bar, demurrage widget, cargo table with PHP equivalents).
+   * Day 3-4: Drag-and-drop Document Vault upload zone and download links.
+   * Day 5: Search, filter, edit, and delete functionalities.
+* Week 8: Upgrades & Polish
+   * Day 1-2: Admin dashboard view.
+   * Day 3-4: PayMongo Pro plan upgrade flow and UI banners.
+   * Day 5: Responsive design polish (loading skeletons, empty states).
+Phase 3: Mobile Application (Month 3 | Weeks 9-12) Goal: Kotlin Android app using strictly XML layouts, Retrofit, and 5 protected endpoints.
+* Week 9: Android Foundation
+   * Day 1-2: Project setup (API 34, XML only). Add Retrofit2, OkHttp3, Navigation Component.
+   * Day 3-5: Login screen UI. Store JWT in EncryptedSharedPreferences. OkHttp3 auth interceptor.
+* Week 10: Mobile Dashboard
+   * Day 1-3: Shipment List (RecyclerView + SwipeRefreshLayout).
+   * Day 4-5: Programmatic urgency badges. Role-aware UI logic based on /auth/me.
+* Week 11: Detail & Documents
+   * Day 1-3: Shipment Detail (NestedScrollView). Step indicator and countdown timer.
+   * Day 4-5: Nested RecyclerView for documents. Download action via Android Intent.
+* Week 12: Notifications & Edge Cases
+   * Day 1-3: Firebase Cloud Messaging (FCM) setup. Register device token, handle push notifications.
+   * Day 4-5: Error handling (401, 403, 500) and Snackbar feedback.
+Phase 4: Integration, Testing & Deployment (Month 4 | Weeks 13-16) Goal: Production-ready system with architecture documentation and final presentation prep.
+* Week 13: E2E Integration
+   * Day 1-3: Full cross-platform end-to-end testing (Web -> Mobile -> API).
+   * Day 4-5: Fix cron job timezone bugs (UTC+8 vs UTC) and verify simulated demurrage states.
+* Week 14: Documentation
+   * Day 1-3: Create layered architecture diagrams.
+   * Day 4-5: Finalize README.md and complete database ERD.
+* Week 15: Security & UX Polish
+   * Day 1-2: Implement API rate limiting on login to prevent brute force.
+   * Day 3-5: Final UI color consistency, helpful error messaging, and state management.
+* Week 16: Deployment & Defense
+   * Day 1-2: Backend deployment to Railway; Web deployment to Vercel.
+   * Day 3: Generate final Android APK. Seed database with demo data.
+   * Day 4-5: Run-through of the 5-minute final defense demo script. Final project submission.
+8.2 Milestones & Risk Management
+Milestones:
+* M1 (End Week 4): Backend API fully functional and tested via Postman.
+* M2 (End Week 8): Next.js web application complete and consuming live data.
+* M3 (End Week 12): Android XML application complete with push notifications.
+* M4 (End Week 14): System fully integrated, bugs resolved, and diagrams finished.
+* M5 (End Week 16): Full system deployed, APK generated, and final defense ready.
+Critical Path:
+1. Spring Boot custom JWT Authentication system (Week 1-2).
+2. Shipment CRUD and doomsdayDate logic (Week 3).
+3. Next.js and Android integration blocked until API endpoints are tested (Month 2 & 3).
+4. Cross-platform testing and timezone resolution (Week 13).
+Risk Mitigation:
+* Strict Sequencing: Do not start Next.js or Kotlin development until the Spring Boot backend is returning correct data.
+* Timezone Complexity: Actively monitor and test the UTC vs UTC+8 PHT discrepancy for the 8 AM demurrage cron job early in the integration phase.
+* Free-Tier Limits: Cache ExchangeRate-API data for 24 hours in the database to prevent hitting monthly request limits.
+* Scope Control: Strictly adhere to the MoSCoW priorities, ensuring core constraints (No Jetpack Compose, No Clerk) are respected before addressing any "Bonus" features.

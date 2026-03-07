@@ -1,0 +1,58 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  
+  --safe: #10b981; /* Emerald 500 */
+  --warning: #f59e0b; /* Amber 500 */
+  --critical: #ef4444; /* Red 500 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #f8fafc;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@layer utilities {
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .glass-dark {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Animations */
+@keyframes urgency-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(var(--pulse-color), 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(var(--pulse-color), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--pulse-color), 0); }
+}
+
+.animate-urgency-warning {
+  --pulse-color: 245, 158, 11;
+  animation: urgency-pulse 2s infinite;
+}
+
+.animate-urgency-critical {
+  --pulse-color: 239, 68, 68;
+  animation: urgency-pulse 1.5s infinite;
+}
