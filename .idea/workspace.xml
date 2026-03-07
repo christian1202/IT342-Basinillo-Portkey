@@ -5,58 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5cb47d8-d428-4f85-9471-e153870b8cf6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/basinillo/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/BasinilloApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/config/CorsProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/config/JwtProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/config/R2Properties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/controller/AdminController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/controller/DocumentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/controller/ShipmentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/ApiError.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/ApiResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/AuthResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/CreateShipmentRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/RegisterRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/ShipmentAnalysisResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/ShipmentItemRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/ShipmentItemResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/ShipmentResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/UpdateShipmentRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/dto/UserDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/entity/Device.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/entity/Document.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/entity/Payment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/entity/Shipment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/entity/ShipmentItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/entity/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/enums/DocumentType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/enums/Plan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/enums/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/enums/ShipmentLane.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/enums/ShipmentStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/exception/DuplicateResourceException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/exception/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/exception/ResourceNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/exception/UnauthorizedException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/repository/DeviceRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/repository/DocumentRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/repository/PaymentRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/repository/ShipmentItemRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/repository/ShipmentRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/security/CustomUserDetailsService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/security/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/security/JwtService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/security/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/service/AdminService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/service/DocumentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/service/ShipmentAnalysisService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/main/java/com/it342/basinillo/service/ShipmentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/basinillo/src/test/java/com/it342/basinillo/BasinilloApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
