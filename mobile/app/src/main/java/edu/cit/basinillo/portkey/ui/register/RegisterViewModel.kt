@@ -16,8 +16,8 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun register(firstname: String, lastname: String, email: String, password: String) {
-        if (firstname.isBlank() || lastname.isBlank() || email.isBlank() || password.isBlank()) {
+    fun register(firstName: String, lastName: String, email: String, password: String) {
+        if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || password.isBlank()) {
             _registerResult.value = Result.failure(Exception("All fields are required"))
             return
         }
@@ -29,7 +29,7 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
 
         _isLoading.value = true
         viewModelScope.launch {
-            val result = authRepository.register(email, password, firstname, lastname)
+            val result = authRepository.register(email, password, firstName, lastName)
             _registerResult.value = result
             _isLoading.value = false
         }

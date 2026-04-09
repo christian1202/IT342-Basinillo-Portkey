@@ -3,14 +3,15 @@ package edu.cit.basinillo.portkey.data.model
 import com.google.gson.annotations.SerializedName
 
 data class User(
+    @SerializedName("id") val id: Long? = null,
     @SerializedName("email") val email: String,
-    @SerializedName("firstname") val firstname: String,
-    @SerializedName("lastname") val lastname: String,
+    @SerializedName("firstName") val firstName: String,
+    @SerializedName("lastName") val lastName: String,
     @SerializedName("role") val role: String? = null,
     @SerializedName("plan") val plan: String? = null
 ) {
-    val displayName: String get() = "$firstname $lastname"
-    val initials: String get() = "${firstname.firstOrNull() ?: ""}${lastname.firstOrNull() ?: ""}".uppercase()
+    val displayName: String get() = "$firstName $lastName"
+    val initials: String get() = "${firstName.firstOrNull() ?: ""}${lastName.firstOrNull() ?: ""}".uppercase()
 }
 
 data class AuthResponse(

@@ -23,8 +23,8 @@ class AuthRepository(
                     tokenManager.saveTokens(body.data.accessToken, body.data.refreshToken)
                     tokenManager.saveUserInfo(
                         body.data.user.email,
-                        body.data.user.firstname,
-                        body.data.user.lastname,
+                        body.data.user.firstName,
+                        body.data.user.lastName,
                         body.data.user.role
                     )
                     Result.success(body.data)
@@ -45,12 +45,12 @@ class AuthRepository(
     suspend fun register(
         email: String,
         password: String,
-        firstname: String,
-        lastname: String
+        firstName: String,
+        lastName: String
     ): Result<AuthResponse> {
         return try {
             val response = apiService.register(
-                RegisterRequest(email, password, firstname, lastname)
+                RegisterRequest(email, password, firstName, lastName)
             )
             if (response.isSuccessful) {
                 val body = response.body()
@@ -58,8 +58,8 @@ class AuthRepository(
                     tokenManager.saveTokens(body.data.accessToken, body.data.refreshToken)
                     tokenManager.saveUserInfo(
                         body.data.user.email,
-                        body.data.user.firstname,
-                        body.data.user.lastname,
+                        body.data.user.firstName,
+                        body.data.user.lastName,
                         body.data.user.role
                     )
                     Result.success(body.data)
