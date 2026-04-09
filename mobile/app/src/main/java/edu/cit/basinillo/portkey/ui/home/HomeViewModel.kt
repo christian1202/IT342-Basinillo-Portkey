@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.cit.basinillo.portkey.data.model.Shipment
+import edu.cit.basinillo.portkey.data.repository.AuthRepository
 import edu.cit.basinillo.portkey.data.repository.ShipmentRepository
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val shipmentRepository: ShipmentRepository) : ViewModel() {
+class HomeViewModel(
+    private val shipmentRepository: ShipmentRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _shipments = MutableLiveData<List<Shipment>>()
     val shipments: LiveData<List<Shipment>> = _shipments
@@ -38,5 +42,9 @@ class HomeViewModel(private val shipmentRepository: ShipmentRepository) : ViewMo
             }
             _isLoading.value = false
         }
+    }
+
+    fun logout() {
+        authRepository.logout()
     }
 }

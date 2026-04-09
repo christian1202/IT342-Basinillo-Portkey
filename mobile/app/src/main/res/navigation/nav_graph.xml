@@ -47,6 +47,13 @@
         android:id="@+id/homeFragment"
         android:name="edu.cit.basinillo.portkey.ui.home.HomeFragment"
         android:label="Active Shipments"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        
+        <action
+            android:id="@+id/action_home_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

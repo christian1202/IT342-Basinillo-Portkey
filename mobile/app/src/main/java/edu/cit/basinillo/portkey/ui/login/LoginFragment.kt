@@ -36,9 +36,12 @@ class LoginFragment : Fragment() {
         val authRepository = AuthRepository(RetrofitClient.apiService, tokenManager)
         viewModel = ViewModelProvider(this, LoginViewModelFactory(authRepository))[LoginViewModel::class.java]
 
-        // Auto-navigate if already logged in
+        // Auto-navigate if already logged in (only if we're actually on the login screen)
         if (viewModel.isLoggedIn()) {
-            findNavController().navigate(R.id.action_login_to_home)
+            val currentDest = findNavController().currentDestination?.id
+            if (currentDest == R.id.loginFragment) {
+                findNavController().navigate(R.id.action_login_to_home)
+            }
             return
         }
 
