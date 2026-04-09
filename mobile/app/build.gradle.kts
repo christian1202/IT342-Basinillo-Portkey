@@ -1,3 +1,6 @@
+import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -17,7 +20,7 @@ android {
         // Read base URL from local.properties, fall back to placeholder
         val localProps = rootProject.file("local.properties")
         val baseUrl = if (localProps.exists()) {
-            val props = java.util.Properties()
+            val props = Properties()
             props.load(localProps.inputStream())
             props.getProperty("API_BASE_URL", "https://portkey-api.railway.app/api/v1")
         } else {
@@ -44,8 +47,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 
     buildFeatures {
