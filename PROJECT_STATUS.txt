@@ -1,0 +1,342 @@
+================================================================================
+   PORTKEY — PROJECT STATUS REPORT
+   IT342-G3 | System Integration and Architecture
+   Generated: 2026-04-08 | Author: Christian Jay Basinillo
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PROJECT OVERVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Name        : PortKey — Intelligent Customs Clearance Platform
+  Domain      : Logistics / Customs Brokerage
+  Primary User: Customs Broker / Logistics Specialist
+  Repository  : christian1202/IT342-Basinillo-Portkey (GitHub)
+  Active Branch: main (up to date with origin/main, clean working tree)
+  SDD Version : 0.2 (Final, dated 3/06/2026)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GIT HISTORY (ALL COMMITS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [1] 8d4e24e  User Registration and Login Completed  ← LATEST
+  [2] 2bdd7a4  fixing bugs
+  [3] 3a51038  updating: files
+  [4] 96f56eb  renaming-files
+  [5] 199fee3  change: files
+  [6] ca8e4af  Initial commit
+
+  Total commits: 6
+  Latest milestone: User Registration & Login is COMPLETE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ TECH STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  BACKEND (Spring Boot — Java)
+  ─────────────────────────────
+  - Framework   : Spring Boot 3.5.11 (Java 17)
+  - Build Tool  : Maven (mvnw wrapper included)
+  - Database    : NeonDB (PostgreSQL 42.7.7 driver)
+  - Security    : Spring Security + jjwt 0.12.6 (custom JWT, stateless)
+  - OAuth2      : Spring Boot OAuth2 Client (Google login)
+  - Validation  : Spring Boot Validation (Bean Validation)
+  - Mail        : Spring Boot Mail (JavaMailSender — welcome, demurrage alerts)
+  - Utilities   : Lombok 1.18.36
+  - Config Proc : spring-boot-configuration-processor
+  - Artifact ID : edu.cit.basinillo / portkey 0.0.1-SNAPSHOT
+
+  WEB FRONTEND (Next.js — TypeScript)
+  ─────────────────────────────────────
+  - Framework   : Next.js 16.1.6
+  - Language    : TypeScript 5.x
+  - Runtime     : React 19.2.4 / React DOM 19.2.4
+  - Styling     : Tailwind CSS 3.4.1 + PostCSS
+  - HTTP Client : Axios 1.13.6
+  - Forms       : React Hook Form 7.71.1 + @hookform/resolvers 5.2.2
+  - Validation  : Zod 4.3.6
+  - Notifications: React Hot Toast 2.6.0
+  - Date Utils  : date-fns 4.1.0
+  - Icons       : Lucide React 0.564.0
+  - API Proxy   : proxy.ts (Next.js middleware-style proxy)
+
+  MOBILE (Android — Kotlin)
+  ──────────────────────────
+  - Status      : NOT YET STARTED (directory is empty — only .gitignore)
+  - Planned OS  : Android 14 (API Level 34), XML Layouts
+  - Planned Libs: Retrofit2, OkHttp3, Firebase Cloud Messaging (FCM)
+  - Auth Store  : EncryptedSharedPreferences
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ BACKEND — IMPLEMENTATION STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Package root: edu.cit.basinillo.portkey
+  Total Java source files: 50
+
+  --- ENTITIES (6 files) ---
+  [x] User.java
+  [x] Shipment.java
+  [x] ShipmentItem.java
+  [x] Document.java
+  [x] Payment.java
+  [x] Device.java
+
+  --- ENUMS (5 files) ---
+  [x] Role.java            (BROKER / ADMIN)
+  [x] Plan.java            (FREE / PRO)
+  [x] ShipmentStatus.java  (ARRIVED / LODGED / ASSESSED / PAID / RELEASED)
+  [x] ShipmentLane.java    (GREEN / YELLOW / RED)
+  [x] DocumentType.java    (BL / CI / PL / PERMIT / OTHER)
+
+  --- REPOSITORIES (6 files) ---
+  [x] UserRepository.java
+  [x] ShipmentRepository.java
+  [x] ShipmentItemRepository.java
+  [x] DocumentRepository.java
+  [x] PaymentRepository.java
+  [x] DeviceRepository.java
+
+  --- SECURITY (4 files) ---
+  [x] SecurityConfig.java
+  [x] JwtService.java
+  [x] JwtAuthenticationFilter.java
+  [x] CustomUserDetailsService.java
+
+  --- CONFIGURATION (3 files) ---
+  [x] JwtProperties.java
+  [x] CorsProperties.java
+  [x] R2Properties.java
+
+  --- DTOs (11 files) ---
+  [x] ApiResponse.java
+  [x] ApiError.java
+  [x] AuthResponse.java
+  [x] UserDto.java
+  [x] LoginRequest.java
+  [x] RegisterRequest.java
+  [x] CreateShipmentRequest.java
+  [x] UpdateShipmentRequest.java
+  [x] ShipmentResponse.java
+  [x] ShipmentItemRequest.java
+  [x] ShipmentItemResponse.java
+  [x] ShipmentAnalysisResponse.java
+
+  --- EXCEPTIONS (4 files) ---
+  [x] GlobalExceptionHandler.java
+  [x] ResourceNotFoundException.java
+  [x] DuplicateResourceException.java
+  [x] UnauthorizedException.java
+
+  --- SERVICES (5 files) ---
+  [x] AuthService.java
+  [x] ShipmentService.java
+  [x] ShipmentAnalysisService.java
+  [x] DocumentService.java
+  [x] AdminService.java
+
+  --- CONTROLLERS (4 files) ---
+  [x] AuthController.java         (register, login, /me)
+  [x] ShipmentController.java     (CRUD + status advance)
+  [x] DocumentController.java     (upload, list)
+  [x] AdminController.java        (global shipments, user management)
+
+  --- ENTRY POINT ---
+  [x] PortkeyApplication.java
+
+  BACKEND SUMMARY:
+  ✅ Authentication (Register + Login) — COMPLETE (confirmed by git commit)
+  ✅ JWT Security Layer — COMPLETE
+  ✅ Shipment CRUD structure — COMPLETE (classes exist)
+  ✅ Document management structure — COMPLETE (classes exist)
+  ✅ Admin management structure — COMPLETE (classes exist)
+  ❓ ExchangeRate-API integration — unknown (no dedicated service file visible)
+  ❓ Cloudflare R2 actual integration — CONFIGURED (R2Properties exists), impl TBD
+  ❓ PayMongo integration — NOT started (no controller/service found)
+  ❓ WebSocket / STOMP real-time — NOT started (no config found)
+  ❓ Demurrage cron job (Spring Scheduler) — NOT started (no scheduler file found)
+  ❓ Google OAuth2 callback handler — dependency added, impl status unknown
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ WEB FRONTEND — IMPLEMENTATION STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Total TS/TSX source files: 31 (excluding node_modules)
+
+  --- PAGES / ROUTES ---
+  [x] app/page.tsx                             (root redirect)
+  [x] app/layout.tsx                           (root layout)
+  [x] app/login/page.tsx                       (Login page)
+  [x] app/register/page.tsx                    (Registration page)
+  [x] app/dashboard/page.tsx                   (Main broker dashboard)
+  [x] app/dashboard/layout.tsx                 (Dashboard layout wrapper)
+  [x] app/dashboard/shipments/page.tsx         (Shipment list)
+  [x] app/dashboard/shipments/new/page.tsx     (Create shipment form)
+  [x] app/dashboard/shipments/[id]/page.tsx    (Shipment detail)
+  [x] app/dashboard/shipments/[id]/edit/page.tsx  (Edit shipment)
+  [x] app/dashboard/shipments/[id]/documents/page.tsx  (Document vault)
+  [x] app/dashboard/admin/page.tsx             (Admin control center)
+
+  --- COMPONENTS ---
+  [x] components/layout/DashboardLayout.tsx
+  [x] components/layout/Header.tsx
+  [x] components/layout/Sidebar.tsx
+  [x] components/ui/Button.tsx
+  [x] components/ui/Input.tsx
+  [x] components/ui/Modal.tsx
+  [x] components/ui/ErrorMessage.tsx
+  [x] components/ui/SkeletonLoader.tsx
+
+  --- HOOKS ---
+  [x] hooks/useAuth.ts
+  [x] hooks/useShipments.ts
+  [x] hooks/useDemurrage.ts
+
+  --- SERVICES ---
+  [x] services/auth-service.ts
+  [x] services/shipment-service.ts
+  [x] services/document-service.ts
+  [x] services/admin-service.ts
+
+  --- LIB / UTILITIES ---
+  [x] lib/api-client.ts       (Axios instance + JWT interceptor)
+  [x] lib/token-store.ts      (JWT token management)
+  [x] types/index.ts          (Shared TypeScript types)
+  [x] proxy.ts                (API proxy — replaces deprecated middleware)
+
+  --- SHARED PACKAGES ---
+  [x] packages/shared-types/  (Shared type definitions across apps)
+
+  WEB FRONTEND SUMMARY:
+  ✅ All route pages created — COMPLETE
+  ✅ Auth (Login + Register) UI — COMPLETE
+  ✅ Dashboard and Shipment list UI — COMPLETE
+  ✅ Create/Edit Shipment forms — COMPLETE
+  ✅ Shipment Detail page — COMPLETE
+  ✅ Document Vault page — COMPLETE
+  ✅ Admin dashboard page — COMPLETE
+  ✅ All API services wired (auth, shipment, document, admin)
+  ✅ JWT token store + API client interceptor — COMPLETE
+  ✅ Shared hooks (useAuth, useShipments, useDemurrage) — COMPLETE
+  ❓ WebSocket live updates (SockJS/STOMP.js) — NOT started
+  ❓ PayMongo Pro plan upgrade flow — NOT started
+  ❓ Google OAuth2 frontend flow — unknown (no OAuth page found)
+  ❓ Drag-and-drop upload (React Dropzone) — not visible in list
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ MOBILE — IMPLEMENTATION STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Status: ❌ NOT STARTED
+  The /mobile directory contains only a .gitignore file and an .idea folder.
+  No Kotlin source files, no build.gradle, no Android project structure.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ OVERALL PHASE PROGRESS (vs SDD Plan)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Phase 1 — Backend (Month 1, Weeks 1–4)
+  ─────────────────────────────────────────
+  Week 1: Foundation & Custom Auth         ✅ DONE
+  Week 2: OAuth & RBAC                     ✅ DONE (structure in place)
+  Week 3: Shipment CRUD + ExchangeRate-API ~~ PARTIAL (CRUD done, ext. API TBD)
+  Week 4: Cron Jobs, WebSocket, R2, PayMongo  ❌ NOT DONE
+
+  Phase 2 — Web Application (Month 2, Weeks 5–8)
+  ─────────────────────────────────────────────────
+  Week 5: Auth UI + JWT interceptor        ✅ DONE
+  Week 6: Broker Dashboard + WebSocket     ~~ PARTIAL (dashboard done, WS TBD)
+  Week 7: Detail + Document Vault          ✅ DONE (pages exist)
+  Week 8: Admin + PayMongo + Polish        ~~ PARTIAL (admin done, PayMongo TBD)
+
+  Phase 3 — Mobile App (Month 3, Weeks 9–12)
+  ────────────────────────────────────────────
+  Week 9-12: All Android development       ❌ NOT STARTED
+
+  Phase 4 — Integration, Testing & Deployment (Month 4, Weeks 13–16)
+  ─────────────────────────────────────────────────────────────────────
+  Not yet reached
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ FEATURE STATUS CHECKLIST (MoSCoW)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  MUST HAVE
+  [x] User Authentication (Register, Login, Logout)
+  [x] Shipment Management CRUD
+  [x] Role-Based Access Control (BROKER / ADMIN)
+  [x] Shipment Lifecycle Status tracking model
+  [x] Basic Shipment Search (structure present)
+  [x] Admin Dashboard (page exists)
+
+  SHOULD HAVE
+  [x] Shipment Analysis Module (service + page exist)
+  [x] Input Validation (Zod on frontend, Bean Validation on backend)
+  [x] Timestamp Logging (entities have created_at fields)
+
+  COULD HAVE
+  [~] Document Upload (UI + backend service classes exist; R2 impl TBD)
+  [ ] Shipment "Flagging" (Urgent/Delayed visual indicator)
+  [ ] Export to CSV/Excel
+  [ ] Client Management table
+
+  WON'T HAVE (by design)
+  [ ] AI Data Extraction
+  [ ] Real-time GPS Tracking
+  [ ] Payment Gateway (in-app)
+  [ ] Email/SMS Notifications to clients
+  [ ] Multi-language Support
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ACCEPTANCE CRITERIA READINESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  AC-1: Broker Registration & Onboarding    ✅ Code complete (confirmed by commit)
+  AC-2: Manual Shipment Lifecycle Core Loop ~~ Needs end-to-end testing
+  AC-3: Data Isolation (Privacy Check)      ~~ Needs end-to-end testing
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ KNOWN GAPS / REMAINING WORK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  HIGH PRIORITY
+  - [ ] Mobile app (Kotlin/Android) — not started at all
+  - [ ] Demurrage cron job (Spring @Scheduled) — no scheduler file exists
+  - [ ] WebSocket/STOMP real-time dashboard updates
+  - [ ] End-to-end testing of auth + shipment lifecycle flow
+
+  MEDIUM PRIORITY
+  - [ ] Cloudflare R2 document upload implementation (R2Properties configured)
+  - [ ] ExchangeRate-API integration (PHP duty conversion)
+  - [ ] Google OAuth2 full callback handler on backend
+  - [ ] PayMongo sandbox integration (/create-link + webhook)
+  - [ ] FCM push notification device registration
+
+  LOW PRIORITY
+  - [ ] Responsive design polish (loading skeletons, empty states)
+  - [ ] Drag-and-drop upload zone (React Dropzone)
+  - [ ] Shipment flagging (Urgent/Delayed visual indicators)
+  - [ ] Export to CSV/Excel
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ DEPLOYMENT TARGETS (PLANNED, NOT YET DEPLOYED)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Backend  : Railway or Heroku
+  Web      : Vercel or Netlify
+  Database : NeonDB (PostgreSQL, serverless)
+  Mobile   : APK (direct install, not Play Store)
+  Files    : Cloudflare R2 (document storage)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ESTIMATED COMPLETION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Backend  : ~70% complete
+  Web      : ~75% complete
+  Mobile   :   0% complete
+  Overall  : ~48% complete (weighted: backend 33%, web 33%, mobile 34%)
+
+================================================================================
+ END OF REPORT
+================================================================================

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="primary">#1565C0</color>
+    <color name="primary_dark">#0D47A1</color>
+    <color name="primary_light">#42A5F5</color>
+    <color name="secondary">#26A69A</color>
+
+    <!-- Surface & Background -->
+    <color name="background_primary">#F5F7FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#E8EAF0</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_tertiary">#9CA3AF</color>
+
+    <!-- Urgency Lane Colors (referenced for SwipeRefresh / Snackbar tints only) -->
+    <!-- Actual shipment card urgency colors are set PROGRAMMATICALLY in ShipmentAdapter -->
+    <color name="urgency_green">#4CAF50</color>
+    <color name="urgency_yellow">#FF9800</color>
+    <color name="urgency_red">#F44336</color>
+
+    <!-- Status Bar -->
+    <color name="status_bar">#0D47A1</color>
+</resources>
