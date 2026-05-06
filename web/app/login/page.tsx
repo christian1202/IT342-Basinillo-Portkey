@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Anchor, ShieldAlert, Mail, Lock } from "lucide-react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/useAuth";
 
 export default function LoginPage() {
   const { login } = useAuth();

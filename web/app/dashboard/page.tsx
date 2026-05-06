@@ -1,6 +1,6 @@
 "use client";
 
-import { useShipments } from "@/hooks/useShipments";
+import { useShipments } from "@/features/shipments/useShipments";
 import { format } from "date-fns";
 import { ShipmentStatus, ShipmentLane } from "@/types";
 import { Anchor, ArrowUpRight, Clock, MapPin, Package } from "lucide-react";
