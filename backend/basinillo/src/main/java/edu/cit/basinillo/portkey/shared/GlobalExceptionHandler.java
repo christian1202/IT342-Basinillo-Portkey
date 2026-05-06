@@ -1,6 +1,5 @@
 package edu.cit.basinillo.portkey.shared;
 
-import edu.cit.basinillo.portkey.shared.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,11 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Centralized error handling — every exception maps to the standard ApiResponse shape.
- * Error codes follow the SDD convention (AUTH-001, VALID-001, DB-001, etc.).
- * Part of the shared kernel — applies to all feature modules.
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -31,20 +25,20 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("VALID-001", "Validation failed", fieldErrors));
     }
 
-    @ExceptionHandler(edu.cit.basinillo.portkey.shared.DuplicateResourceException.class)
-    public ResponseEntity<ApiResponse<Void>> handleDuplicate(edu.cit.basinillo.portkey.shared.DuplicateResourceException ex) {
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicate(DuplicateResourceException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiResponse.error("DB-002", "Duplicate entry", ex.getMessage()));
     }
 
-    @ExceptionHandler(edu.cit.basinillo.portkey.shared.ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(edu.cit.basinillo.portkey.shared.ResourceNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.error("DB-001", "Resource not found", ex.getMessage()));
     }
 
-    @ExceptionHandler(edu.cit.basinillo.portkey.shared.UnauthorizedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleUnauthorized(edu.cit.basinillo.portkey.shared.UnauthorizedException ex) {
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUnauthorized(UnauthorizedException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ApiResponse.error("AUTH-001", "Authentication failed", ex.getMessage()));
     }
