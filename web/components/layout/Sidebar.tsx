@@ -11,7 +11,7 @@ import {
   Anchor
 } from "lucide-react";
 import { useAuth } from "@/features/auth/useAuth";
-import { Role } from "@/types";
+import { Role } from "@/features/auth/types";
 
 interface NavItem {
   href: string;

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
-import { useShipments } from "@/hooks/useShipments";
-import { uploadDocument, getDocuments } from "@/services/document-service";
-import { ShipmentDocument as PortKeyDoc, DocumentType } from "@/types";
+import { useShipments } from "@/features/shipments/useShipments";
+import { uploadDocument, getDocuments } from "@/features/documents/service";
+import { ShipmentDocument as PortKeyDoc, DocumentType } from "@/features/documents/types";
 import { format } from "date-fns";
 import Link from "next/link";
 import { 

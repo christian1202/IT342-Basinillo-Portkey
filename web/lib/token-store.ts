@@ -4,7 +4,7 @@
 /*  All auth state reads/writes go through this module.                */
 /* ================================================================== */
 
-import type { AuthTokens, User } from "@/types";
+import type { User, AuthTokens } from "@/features/auth/types";
 
 const KEYS = {
   ACCESS_TOKEN: "portkey_access_token",

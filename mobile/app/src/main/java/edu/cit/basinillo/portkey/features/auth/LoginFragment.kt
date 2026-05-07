@@ -39,7 +39,7 @@ class LoginFragment : Fragment() {
 
         // Wire dependencies using the shared infrastructure
         val tokenManager = TokenManager(requireContext())
-        val authRepository = AuthRepository(RetrofitClient.apiService, tokenManager)
+        val authRepository = AuthRepository(RetrofitClient.authApiService, tokenManager)
         viewModel = ViewModelProvider(this, LoginViewModelFactory(authRepository))[LoginViewModel::class.java]
 
         // Auto-navigate if already logged in

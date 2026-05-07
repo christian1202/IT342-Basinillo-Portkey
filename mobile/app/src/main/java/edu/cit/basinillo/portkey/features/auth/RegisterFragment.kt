@@ -1,4 +1,5 @@
 /* ================================================================== */
+
 /*  PORTKEY — Register Fragment (Mobile Vertical Slice)               */
 /*  Auth feature — registration form screen.                          */
 /*  Co-located with the auth feature module.                          */
@@ -39,7 +40,7 @@ class RegisterFragment : Fragment() {
 
         // Wire dependencies using shared infrastructure
         val tokenManager = TokenManager(requireContext())
-        val authRepository = AuthRepository(RetrofitClient.apiService, tokenManager)
+        val authRepository = AuthRepository(RetrofitClient.authApiService, tokenManager)
         viewModel = ViewModelProvider(
             this,
             RegisterViewModelFactory(authRepository)
@@ -99,3 +100,4 @@ class RegisterViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 }
+

@@ -3,8 +3,8 @@ package edu.cit.basinillo.portkey
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import edu.cit.basinillo.portkey.data.local.TokenManager
-import edu.cit.basinillo.portkey.network.RetrofitClient
+import edu.cit.basinillo.portkey.shared.TokenManager
+import edu.cit.basinillo.portkey.shared.RetrofitClient
 
 class MainActivity : AppCompatActivity() {
 

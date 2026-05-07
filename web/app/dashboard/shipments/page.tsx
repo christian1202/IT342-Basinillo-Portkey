@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useShipments } from "@/hooks/useShipments";
-import { ShipmentLane, ShipmentStatus } from "@/types";
+import { useShipments } from "@/features/shipments/useShipments";
+import { ShipmentLane, ShipmentStatus } from "@/features/shipments/types";
 import { format } from "date-fns";
 import Link from "next/link";
 import { Plus, Search, Filter, Ship, Plane, Package } from "lucide-react";

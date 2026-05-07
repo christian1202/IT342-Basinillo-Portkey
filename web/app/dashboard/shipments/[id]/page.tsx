@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
-import { useShipments } from "@/hooks/useShipments";
-import { getShipmentById } from "@/services/shipment-service";
-import { Shipment, ShipmentStatus } from "@/types";
+import { useShipments } from "@/features/shipments/useShipments";
+import { getShipmentById } from "@/features/shipments/service";
+import type { Shipment } from "@/features/shipments/types";
+import { ShipmentStatus } from "@/features/shipments/types";
 import { format } from "date-fns";
-import { useDemurrage } from "@/hooks/useDemurrage";
+import { useDemurrage } from "@/features/shipments/useDemurrage";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 

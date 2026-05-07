@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,10 +45,30 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error("AUTH-001", "Authentication failed", ex.getMessage()));
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
+        @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiResponse<Void>> handleBadCredentials(BadCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ApiResponse.error("AUTH-001", "Invalid credentials", "Email or password is incorrect"));
+    }
+
+    /**
+     * Catches Spring Security authentication exceptions (no token, expired token, etc.)
+     * and returns 401 instead of falling through to the generic 500 handler.
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthentication(AuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error("AUTH-001", "Authentication failed", ex.getMessage()));
+    }
+
+    /**
+     * Catches wrong HTTP method (e.g., GET on POST-only endpoint)
+     * and returns 405 instead of falling through to the generic 500 handler.
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(ApiResponse.error("VALID-002", "Method not allowed", ex.getMessage()));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
