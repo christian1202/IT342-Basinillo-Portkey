@@ -1,8 +1,8 @@
 "use client";
 
 import { LogOut, Bell, Menu } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { Role } from "@/types";
+import { useAuth } from "@/features/auth/useAuth";
+import { Role } from "@/features/auth/types";
 
 export default function Header() {
   const { user, logout } = useAuth();

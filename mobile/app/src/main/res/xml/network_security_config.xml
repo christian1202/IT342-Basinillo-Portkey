@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- Allow cleartext (HTTP) traffic to the Android emulator's host loopback only.
-         In production builds, only HTTPS is used. -->
+    <!-- Production: HTTPS to the Railway-deployed backend. -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">portkey-api.railway.app</domain>
+    </domain-config>
+
+    <!-- Local dev: Allow cleartext (HTTP) traffic to the Android emulator's host loopback.
+         Only needed when running the backend locally (10.0.2.2 → host localhost). -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">10.0.2.2</domain>
+        <domain includeSubdomains="false">192.168.1.7</domain>
     </domain-config>
 </network-security-config>

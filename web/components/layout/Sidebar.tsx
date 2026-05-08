@@ -10,8 +10,8 @@ import {
   Users,
   Anchor
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { Role } from "@/types";
+import { useAuth } from "@/features/auth/useAuth";
+import { Role } from "@/features/auth/types";
 
 interface NavItem {
   href: string;

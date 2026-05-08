@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Anchor, ShieldAlert, Mail, Lock, User as UserIcon } from "lucide-react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/useAuth";
 
 export default function RegisterPage() {
   const { register } = useAuth();

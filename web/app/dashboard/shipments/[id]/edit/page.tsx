@@ -2,8 +2,8 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { useShipments } from "@/hooks/useShipments";
-import { getShipmentById } from "@/services/shipment-service";
+import { useShipments } from "@/features/shipments/useShipments";
+import { getShipmentById } from "@/features/shipments/service";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { ArrowLeft, Package, Anchor } from "lucide-react";
