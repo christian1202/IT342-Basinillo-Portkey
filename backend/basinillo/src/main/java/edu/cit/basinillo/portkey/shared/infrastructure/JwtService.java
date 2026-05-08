@@ -21,8 +21,21 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:}")
     private String secretKey;
+
+    private SecretKey signingKey;
+
+    @jakarta.annotation.PostConstruct
+    public void init() {
+        if (secretKey == null || secretKey.isBlank()) {
+            // Generate a secure random key for development/tests if no secret is provided
+            this.signingKey = Jwts.SIG.HS256.key().build();
+        } else {
+            byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+            this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+        }
+    }
 
     @Value("${jwt.access-token-expiration-ms}")
     private long accessTokenExpirationMs;
@@ -71,7 +84,6 @@ public class JwtService {
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return this.signingKey;
     }
 }
